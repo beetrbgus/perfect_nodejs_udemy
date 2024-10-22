@@ -51,6 +51,19 @@ const requestHandler = (req,res) => {
     res.end();
 }
 
+// 1. 단일로 내보낼 때
+// module.exports = requestHandler;
 
-module.exports = requestHandler;
-// module.exports = {requestHandler};
+// 2-1. 객체로 내보낼 때 직접 지정
+// module.exports.handler = requestHandler;
+// module.exports.someText = 'some hard coded text';
+
+// 2-2. 객체로 내보낼 때 module 제거하고 지정
+// exports.handler = requestHandler;
+// exports.someText = 'some hard coded text';
+
+// 2-3. 객체로 내보낼 때 K-V형식으로 지정
+module.exports = {
+    handler : requestHandler,
+    someText : 'some hard coded text'
+};
