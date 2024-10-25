@@ -1,6 +1,16 @@
 const http = require('http');
-const routes = require('./routes');
 
-const server = http.createServer(routes.handler);
-console.log(routes.someText);
-server.listen(3000);
+const express = require('express');
+
+const app = express();
+
+app.use((req, res, next)=>{
+    console.log('In the middleware!');
+    next(); // 요청을 다음으로 넘기기 위해서는 next 필요. next 없다면 아래의 use 함수 호출되지 않음.
+});
+
+app.use((req, res, next)=>{
+    console.log('In other middleware!');
+});
+const server = http.createServer(app);
+server.listen(3000); 
