@@ -5,7 +5,7 @@ const rootDir = require('../util/path');
 const router = express.Router();
 
 router.use((req, res, next) => {
-    res.status(404).sendFile(path.join(rootDir, 'views', 'error.html'))
+    res.status(404).render('error', {docTitle : "Page Not Founded"});
 });
 
 module.exports = router;
