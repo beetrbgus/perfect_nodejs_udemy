@@ -20,6 +20,6 @@ exports.getProducts = (req, res, next)=> {
     Product.fetchAll((products)=> {
         console.log('In the products', products);
         // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
-        res.render('shop', {prods : products, docTitle : "Shop"});
+        res.render('shop/product-list', {prods : products, docTitle : "Shop"});
     });
 }
