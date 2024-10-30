@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const path = require('path');
 
-const adminData =  require('./routes/admin');
+const adminRoutes =  require('./routes/admin');
 const shopRouter =  require('./routes/shop');
 const errorRouter = require('./routes/error');
 
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false})); // body-parser 미들웨어 
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin', adminData.routes);
+app.use('/admin', adminRoutes);
 app.use(shopRouter); 
 app.use(errorRouter);
 
