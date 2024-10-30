@@ -1,4 +1,5 @@
-const products = [];
+const Product = require('../models/product');
+
 const path = require('path');
 const rootDir = require('../util/path');
 
@@ -10,14 +11,14 @@ exports.getAddProduct = (req, res, next)=> {
 
 exports.postAddProduct = (req, res, next)=> { // next는 사용하지 않으면 생략 가능.
     console.log('redirect product!');
-
-    products.push({ title : req.body.title }); 
+    const product = new Product(req.body.title);
+    product.save();
     res.redirect('/');    
 }
 
 exports.getProducts = (req, res, next)=> {
     console.log('In the middleware!');
-    console.log('shop.js', products);
+    const products = Product.fetchAll;
     // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
     res.render('shop', {prods : products, docTitle : "Shop"});
 }
