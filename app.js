@@ -6,7 +6,8 @@ const path = require('path');
 
 const adminRoutes =  require('./routes/admin');
 const shopRouter =  require('./routes/shop');
-const errorRouter = require('./routes/error');
+
+const errorController = require('./controllers/error');
 
 app.set('view engine', 'pug');
 
@@ -16,6 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminRoutes);
 app.use(shopRouter); 
-app.use(errorRouter);
+
+app.use(errorController.get404);
 
 app.listen(3000); 
