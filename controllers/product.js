@@ -17,8 +17,9 @@ exports.postAddProduct = (req, res, next)=> { // next는 사용하지 않으면 
 }
 
 exports.getProducts = (req, res, next)=> {
-    console.log('In the middleware!');
-    const products = Product.fetchAll;
-    // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
-    res.render('shop', {prods : products, docTitle : "Shop"});
+    Product.fetchAll((products)=> {
+        console.log('In the products', products);
+        // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
+        res.render('shop', {prods : products, docTitle : "Shop"});
+    });
 }
