@@ -8,7 +8,12 @@ exports.getAddProduct = (req, res, next)=> {
 
 exports.postAddProduct = (req, res, next)=> { // next는 사용하지 않으면 생략 가능.
     console.log('redirect product!');
-    const product = new Product(req.body.title);
+    const title = req.body.title;
+    const imageUrl = req.body.imageUrl;
+    const price = req.body.price;
+    const description = req.body.description;
+
+    const product = new Product(title, imageUrl, description, price);
     product.save();
     res.redirect('/');    
 }
