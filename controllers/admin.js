@@ -12,3 +12,15 @@ exports.postAddProduct = (req, res, next)=> { // next는 사용하지 않으면 
     product.save();
     res.redirect('/');    
 }
+
+exports.getProducts = (req, res, next) => {
+    Product.fetchAll((products)=> {
+        console.log('In the products', products);
+        // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
+        res.render('admin/products', {
+            prods : products, 
+            pageTitle : "Admin Products",
+            path: '/admin/products'
+        });
+    });
+}
