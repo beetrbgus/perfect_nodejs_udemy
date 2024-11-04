@@ -3,13 +3,19 @@ const path = require('path');
 
 const router = express.Router();
 
-const adminController = require('../controllers/product');
+const shopController = require('../controllers/admin');
 
 // router.use('/', (req, res, next)=>{ // use => spring에서 @RequestMapping 느낌
 //     console.log('항상 작동함');
 //     next(); // next가 있으면 다음 라우트로 전달 됨
 // });
 
-router.get('/', adminController.getProducts);
+router.get('/', shopController.getProducts);
+
+router.get('/products');
+
+router.get('/cart');
+
+router.get('/checkout');
 
 module.exports = router;
