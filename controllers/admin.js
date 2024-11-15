@@ -22,7 +22,9 @@ exports.getEditProduct = (req, res, next) => {
         if(!product) {
             return res.redirect('/');
         }
+        
         console.log("aaaaaaaaaaaaa ", product);
+        console.log("productId is ", productId);
         res.render('admin/edit-product', {
             pageTitle : "Edit Product2",
             path : '/admin/add-product',
@@ -40,12 +42,13 @@ exports.postAddProduct = (req, res, next) => { // next는 사용하지 않으면
     const price = req.body.price;
     const description = req.body.description;
 
-    const product = new Product(title, imageUrl, description, price);
+    const product = new Product(null, title, imageUrl, description, price);
     product.save();
     res.redirect('/');    
 }
 
 exports.getProducts = (req, res, next) => {
+    console.log("admin getProducts");
     Product.fetchAll((products)=> {
         console.log('In the products', products);
         // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
@@ -70,15 +73,16 @@ exports.getEditProducts = (req, res, next) => {
 }
 
 exports.postEditProduct = (req, res, next) => {
-    Product.fetchAll((products)=> {
-        console.log('In the products', products);
-        // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
-        res.render('admin/products', {
-            prods : products, 
-            pageTitle : "Admin Products",
-            path: '/admin/products'
-        });
-    });
+    const productId = req.body.productId;
+    const updatedTitle = req.body.title;
+    const updatedPrice = req.body.price;
+    const updatedImageUrl = req.body.imageUrl;
+    const updatedDescription = req.body.description;
+    console.log("postEditProduct : ",productId );
+    const updatedProduct = new Product(productId, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice);
+    updatedProduct.save();
+    console.log("updatedProduct is"), updatedProduct;
+    res.redirect('/admin/products'); 
 }
 
 exports.deleteProduct = (req, res, next) => {
