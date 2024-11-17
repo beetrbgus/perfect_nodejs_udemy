@@ -23,7 +23,7 @@ module.exports = class Cart {
             // 새로운 제품 추가하기 / 수량 증가시키기
             if(existingProduct) {
                 updatedProduct = {...existingProduct}; 
-                updatedProduct.qty = updatedProduct.qty = 1;
+                updatedProduct.qty += 1;
                 cart.products = [...cart.products];
                 cart.products[existingProductIndex] = updatedProduct;
             } else {
@@ -54,6 +54,16 @@ module.exports = class Cart {
                 console.log(err);
             });
 
+        });
+    }
+    static getCarts(cb) {
+        fs.readFile(p, (err, fileContent) => {
+            if(err) {
+               cb(null);
+            } else {
+                const carts = JSON.parse(fileContent);
+                cb(carts);
+            }
         });
     }
 
