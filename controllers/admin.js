@@ -86,13 +86,7 @@ exports.postEditProduct = (req, res, next) => {
 }
 
 exports.deleteProduct = (req, res, next) => {
-    Product.fetchAll((products)=> {
-        console.log('In the products', products);
-        // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
-        res.render('admin/products', {
-            prods : products, 
-            pageTitle : "Admin Products",
-            path: '/admin/products'
-        });
-    });
+    const productId = req.body.productId;
+    Product.delete(productId);
+    res.redirect('/admin/products');
 }
