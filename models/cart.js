@@ -45,6 +45,11 @@ module.exports = class Cart {
             }
             const updatedCart = {...JSON.parse(fileContent)};
             const product = updatedCart.products.find(prod => prod.id === id);
+            // 제품이 없으면 삭제 처리하지 않음.
+            if(!product) {
+                return;
+            }
+
             const productQty = product.qty;
             updatedCart.products = updatedCart.products.filter(prod => prod.id !== id);
             
