@@ -43,8 +43,11 @@ exports.postAddProduct = (req, res, next) => { // next는 사용하지 않으면
     const description = req.body.description;
 
     const product = new Product(null, title, imageUrl, description, price);
-    product.save();
-    res.redirect('/');    
+    product.save()
+    .then(()=> {
+        res.redirect('/');
+    })
+    .catch(err => console.log(err));
 }
 
 exports.getProducts = (req, res, next) => {

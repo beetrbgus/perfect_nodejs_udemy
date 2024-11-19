@@ -2,37 +2,47 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getProducts = (req, res, next)=> {
-    Product.fetchAll((products)=> {
-        console.log('In the products', products);
+    Product.fetchAll()
+    .then(([rows, fieldData])=> {
         // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
         res.render('shop/product-list', {
-            prods : products, 
+            prods : rows, 
             pageTitle : "Shop",
             path: '/products'
         });
+    })
+    .catch(err => {
+        console.log(err);
     });
 }
 
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId;
-    Product.findById(productId, product => {
+    Product.findById(productId)
+    .then((row, fieldData) => {
         console.log("product is ", product);
         res.render('shop/product-detail', {
-            product : product,
+            product : row,
             pageTitle : product.title,
             path: '/product/' + product.id,
         });
+    }).catch(err => {
+        console.log(err);
     });
 }
 
 exports.getIndex = (req, res, next) => {
-    Product.fetchAll(products => {
+    Product.fetchAll()
+    .then(([rows, fieldData])=> {
         res.render('shop/index', {
-            prods : products, 
+            prods : rows, 
             pageTitle : "Shop",
             path: '/',
-        })
+        });
     })
+    .catch(err => {
+        console.log(err);
+    });
 }
 
 exports.postCart = (req, res, next) => {

@@ -1,12 +1,15 @@
-const fs = require('fs');
-const path = require('path');
+// @deprecated 
+// 파일 시스템에서 가져오는 방법 
+// const fs = require('fs');
+// const path = require('path');
+// const p = path.join(
+//     require.main.path,
+//     'data',
+//     'products.json'
+// );
 const Cart = require('./cart');
+const db = require('../util/db_connection');
 
-const p = path.join(
-    require.main.path,
-    'data',
-    'products.json'
-);
 const getProductsFromFile = cb => {
 
     fs.readFile(p, (err, fileContent) => {
@@ -34,38 +37,47 @@ module.exports = class Product {
     }
 
     save() {
-        getProductsFromFile(products => {
-            if(this.id) {
-                const existingProductIndex = products.findIndex(prod => prod.id === this.id);
-                console.log("existingProductIndex is ", Number(existingProductIndex));
+        return db.execute(
+            `INSERT INTO products(title, price, description, imageUrl) values(?, ? , ? , ?)`
+            , [this.title, this.price, this.description, this.imageUrl]
+        );
+        
+        // getProductsFromFile(products => {
+        //     if(this.id) {
+        //         const existingProductIndex = products.findIndex(prod => prod.id === this.id);
+        //         console.log("existingProductIndex is ", Number(existingProductIndex));
                 
-                const updatedProducts = [... products];
-                updatedProducts[existingProductIndex] = this;
+        //         const updatedProducts = [... products];
+        //         updatedProducts[existingProductIndex] = this;
 
-                fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
-                    console.log(err);
-                });
-            } else {
-                this.id = Date.now().toString();
-                products.push(this);
-                fs.writeFile(p, JSON.stringify(products), (err) => {
-                    console.log(err);
-                });
-            }
+        //         fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
+        //             console.log(err);
+        //         });
+        //     } else {
+        //         this.id = Date.now().toString();
+        //         products.push(this);
+        //         fs.writeFile(p, JSON.stringify(products), (err) => {
+        //             console.log(err);
+        //         });
+        //     }
             
-        });
+        // });
     }
 
-    static fetchAll(cb) {
-        getProductsFromFile(cb);
+    static fetchAll() {
+        return db.execute('SELECT * FROM products');
     }
 
-    static findById(id, cb) {
-        getProductsFromFile(products => {
-            const product = products.find(p=> p.id === id);
-            cb(product);
-        });
+    static findById(id) {
+        return db.execute(`SELECT * FROM products WHERE id = ${id}`);
     }
+
+    // static findById(id, cb) {
+    //     getProductsFromFile(products => {
+    //         const product = products.find(p=> p.id === id);
+    //         cb(product);
+    //     });
+    // }
 
     static deleteById(id) {
         getProductsFromFile(products => {
