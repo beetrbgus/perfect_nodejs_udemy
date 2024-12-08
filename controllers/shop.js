@@ -19,16 +19,20 @@ exports.getProducts = (req, res, next)=> {
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId;
     Product.findById(productId)
-    .then((row, fieldData) => {
-        console.log("product is ", product);
+    .then(([product]) => {
+        // res.sendFile(path.join(rootDir,'views', 'admin/add-product.html')); // 파일로 보내는 법
+        console.log("product");
+        console.log(product);
+        
+        if(!product) {
+            return res.redirect('/');
+        }
         res.render('shop/product-detail', {
-            product : row,
-            pageTitle : product.title,
-            path: '/product/' + product.id,
+            pageTitle : product[0].title,
+            path : '/products',
+            product : product[0]
         });
-    }).catch(err => {
-        console.log(err);
-    });
+    }).catch(err => console.log(err)); 
 }
 
 exports.getIndex = (req, res, next) => {
@@ -48,8 +52,9 @@ exports.getIndex = (req, res, next) => {
 exports.postCart = (req, res, next) => {
     const productId = req.body.productId;
     console.log("postCart's productId is ", productId);
-    Product.findById(productId, (product)=> {
-        Cart.addProduct(productId, product.price);
+    Product.findById(productId)
+    .then(([row, fieldData]) => {
+        Cart.addProduct(productId, row.price);
     });
     res.redirect('/cart');
 }

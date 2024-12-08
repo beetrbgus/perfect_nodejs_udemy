@@ -17,23 +17,20 @@ exports.getEditProduct = (req, res, next) => {
         return res.redirect('/');
     }
     const productId = req.params.productId;
-    Product.findById(productId, product => {
-        // res.sendFile(path.join(rootDir,'views', 'admin/add-product.html'));
-        if(!product) {
+    Product.findById(productId)
+    .then(([row, fieldData]) => {
+        // res.sendFile(path.join(rootDir,'views', 'admin/add-product.html')); // 파일로 보내는 법
+        if(!row) {
             return res.redirect('/');
         }
-        
-        console.log("aaaaaaaaaaaaa ", product);
-        console.log("productId is ", productId);
         res.render('admin/edit-product', {
             pageTitle : "Edit Product2",
             path : '/admin/add-product',
             editing : editMode,
-            product : product
+            product : row
         });
-
-    });
-    }
+    }).catch(err => console.log(err)); 
+}
 
 exports.postAddProduct = (req, res, next) => { // next는 사용하지 않으면 생략 가능.
     console.log('redirect product!');
