@@ -6,6 +6,7 @@ const path = require('path');
 
 const adminRoutes =  require('./routes/admin');
 const shopRouter =  require('./routes/shop');
+const sequelize = require('./util/db_connection');
 
 app.set('view engine', 'pug');
 app.set('view engine', 'ejs');
@@ -21,4 +22,10 @@ app.use((req, res, next) => {
     res.status(404).render('404', {pageTitle : "Page Not Founded"}); 
 });
 
-app.listen(3000); 
+sequelize.sync().then(result => {
+    // console.log(result);
+    app.listen(3000); 
+})
+.catch(err => {
+    console.log(err);
+});
