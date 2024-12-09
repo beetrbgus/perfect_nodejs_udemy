@@ -18,8 +18,9 @@ exports.getProducts = (req, res, next)=> {
 
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId;
-    Product.findById(productId)
-    .then(([product]) => {
+    Product.findByPk(productId)
+    // Product.findById(productId)
+    .then((product) => {
         // res.sendFile(path.join(rootDir,'views', 'admin/add-product.html')); // 파일로 보내는 법
         console.log("product");
         console.log(product);
@@ -28,9 +29,9 @@ exports.getProduct = (req, res, next) => {
             return res.redirect('/');
         }
         res.render('shop/product-detail', {
-            pageTitle : product[0].title,
+            pageTitle : product.title,
             path : '/products',
-            product : product[0]
+            product : product
         });
     }).catch(err => console.log(err)); 
 }
