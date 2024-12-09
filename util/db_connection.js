@@ -7,12 +7,19 @@
 //     password : 'root'
 // });
 
-// Sequelize 사용해 
-const Sequelize = require('sequelize');
+import { Sequelize } from 'sequelize';
 
+// Sequelize 인스턴스 생성
 const sequelize = new Sequelize('node-complete', 'root', 'root', {
-    dialect : 'mysql',
-    host : 'localhost'
+  dialect: 'mysql',
+  host: 'localhost',
+  logging: false,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
 });
 
-module.exports = sequelize;
+export default sequelize;
