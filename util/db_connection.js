@@ -7,7 +7,7 @@
 //     password : 'root'
 // });
 
-import { Sequelize } from 'sequelize';
+const { Sequelize } = require('sequelize');
 
 // Sequelize 인스턴스 생성
 const sequelize = new Sequelize('node-complete', 'root', 'root', {
@@ -22,4 +22,4 @@ const sequelize = new Sequelize('node-complete', 'root', 'root', {
   },
 });
 
-export default sequelize;
+module.exports = sequelize;

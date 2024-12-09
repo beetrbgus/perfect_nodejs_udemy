@@ -1,28 +1,28 @@
-const Sequelize = require('sequelize');
+const {DataTypes} = require('sequelize');
 
 const sequelize = require('../util/db_connection');
 
 const Product = sequelize.define('product', {
     id : {
-        type: Sequelize.BIGINT,
+        type: DataTypes.BIGINT,
         autoIncrement : true,
         allowNull : false, 
         primaryKey : true
     },
     title : {
-        type : Sequelize.STRING,
+        type : DataTypes.STRING,
         allowNull : false, 
     },
     price : {
-        type : Sequelize.INTEGER,
+        type : DataTypes.INTEGER,
         allowNull : false, 
     },
     description : {
-        type : Sequelize.STRING,
+        type : DataTypes.STRING,
         allowNull : false, 
     },
     imageUrl : {
-        type : Sequelize.STRING,
+        type : DataTypes.STRING,
         allowNull : false,
     }
 });

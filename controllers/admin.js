@@ -39,12 +39,17 @@ exports.postAddProduct = (req, res, next) => { // next는 사용하지 않으면
     const price = req.body.price;
     const description = req.body.description;
 
-    const product = new Product(null, title, imageUrl, description, price);
-    product.save()
-    .then(()=> {
+    Product.create({
+        title : title,
+        price : price,
+        description : description,
+        imageUrl : imageUrl,
+    }).then(result => {
+        console.log(result);
         res.redirect('/');
-    })
-    .catch(err => console.log(err));
+    }).catch(err => {
+        console.log(err);
+    });
 }
 
 exports.getProducts = (req, res, next) => {
