@@ -16,20 +16,22 @@ exports.getEditProduct = (req, res, next) => {
     if(!editMode) {
         return res.redirect('/');
     }
-    const productId = req.params.productId;
-    Product.findById(productId)
-    .then(([row, fieldData]) => {
-        // res.sendFile(path.join(rootDir,'views', 'admin/add-product.html')); // 파일로 보내는 법
-        if(!row) {
+    const prodId = req.params.productId;
+
+    Product.findByPk(prodId)
+    .then(product => {
+        if(!product) {
             return res.redirect('/');
         }
+
         res.render('admin/edit-product', {
             pageTitle : "Edit Product2",
             path : '/admin/add-product',
             editing : editMode,
-            product : row
+            product : product
         });
-    }).catch(err => console.log(err)); 
+    })
+    .catch(err => console.log(err));
 }
 
 exports.postAddProduct = (req, res, next) => { // next는 사용하지 않으면 생략 가능.
@@ -54,7 +56,8 @@ exports.postAddProduct = (req, res, next) => { // next는 사용하지 않으면
 
 exports.getProducts = (req, res, next) => {
     console.log("admin getProducts");
-    Product.fetchAll((products)=> {
+    Product.findAll()
+    .then(products => {
         console.log('In the products', products);
         // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
         res.render('admin/products', {
@@ -62,11 +65,14 @@ exports.getProducts = (req, res, next) => {
             pageTitle : "Admin Products",
             path: '/admin/products'
         });
+    })
+    .catch(err => {
+        console.log(err);
     });
 }
 
 exports.getEditProducts = (req, res, next) => {
-    Product.fetchAll((products)=> {
+    Product.fetchAll((products)=> { 
         console.log('In the products', products);
         // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
         res.render('admin/products', {
@@ -84,9 +90,21 @@ exports.postEditProduct = (req, res, next) => {
     const updatedImageUrl = req.body.imageUrl;
     const updatedDescription = req.body.description;
     console.log("postEditProduct : ",productId );
-    const updatedProduct = new Product(productId, updatedTitle, updatedImageUrl, updatedDescription, updatedPrice);
-    updatedProduct.save();
-    console.log("updatedProduct is"), updatedProduct;
+
+    Product.findByPk(productId)
+    .then(product => {
+        product.title = updatedTitle;
+        product.price = updatedPrice;
+        product.imageUrl = updatedImageUrl;
+        product.description = updatedDescription;
+
+        return product.save();
+    })
+    .then(result => {
+        console.log("UPDATED PRODUCT");
+    })
+    .catch(err => console.log(err));
+
     res.redirect('/admin/products'); 
 }
 
