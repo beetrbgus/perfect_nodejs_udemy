@@ -48,7 +48,7 @@ exports.postAddProduct = (req, res, next) => { // next는 사용하지 않으면
         imageUrl : imageUrl,
     }).then(result => {
         console.log(result);
-        res.redirect('/');
+        res.redirect('/admin/products');
     }).catch(err => {
         console.log(err);
     });
@@ -110,6 +110,14 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
     const productId = req.body.productId;
-    Product.deleteById(productId);
+    Product.findByPk(productId)
+    .then(product => {
+        return product.destroy();
+    })
+    .then(result => {
+        console.log('DESTROY PRODUCT!!');
+        res.redirect('/admin/products');
+    })
+    .catch(err => console.log(err));
     res.redirect('/admin/products');
 }
