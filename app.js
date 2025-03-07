@@ -7,6 +7,8 @@ const path = require('path');
 const adminRoutes =  require('./routes/admin');
 const shopRouter =  require('./routes/shop');
 const sequelize = require('./util/db_connection');
+const Product = require('./models/product');
+const User = require('./models/user');
 
 app.set('view engine', 'pug');
 app.set('view engine', 'ejs');
@@ -22,7 +24,11 @@ app.use((req, res, next) => {
     res.status(404).render('404', {pageTitle : "Page Not Founded"}); 
 });
 
-sequelize.sync().then(result => {
+Product.belongsTo(User, { constraints: true, onDelete : 'CASCADE' });
+User.hasMany(Product);
+
+sequelize.sync({force: true})
+.then(result => {
     // console.log(result);
     app.listen(3000); 
 })
