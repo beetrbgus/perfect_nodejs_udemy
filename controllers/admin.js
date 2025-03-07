@@ -23,7 +23,7 @@ exports.getEditProduct = (req, res, next) => {
     req.user.getProducts({where : {id: prodId}})
     .then(products => {
         const product = products[0];
-        
+
         if(!product) {
             return res.redirect('/');
         }
@@ -62,9 +62,10 @@ exports.postAddProduct = (req, res, next) => { // next는 사용하지 않으면
 
 exports.getProducts = (req, res, next) => {
     console.log("admin getProducts");
-    Product.findAll()
+
+    req.user.getProducts()
+    // Product.findAll()
     .then(products => {
-        console.log('In the products', products);
         // res.sendFile(path.join(rootDir, 'views', 'shop.html')); // html 전달하는 방식의 렌더링
         res.render('admin/products', {
             prods : products, 
