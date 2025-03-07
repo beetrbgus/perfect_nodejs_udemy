@@ -13,7 +13,7 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize('node-complete', 'root', 'root', {
   dialect: 'mysql',
   host: 'localhost',
-  logging: false,
+  logging: true,
   pool: {
     max: 5,
     min: 0,
